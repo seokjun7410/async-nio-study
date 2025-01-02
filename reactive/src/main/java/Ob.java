@@ -1,6 +1,8 @@
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 public class Ob {
 	//Reactive Programming, ReactiveX, Functional Reactive Programming
@@ -18,25 +20,25 @@ public class Ob {
 //		for (Integer i : list) { // for-each
 //			System.out.println("i = " + i);
 
-		Iterable<Integer> myIter = () ->
-			new Iterator<>() {
-				int i = 0;
-				final static int MAX = 10;
-
-				@Override
-				public boolean hasNext() {
-					return i < MAX;
-				}
-
-				@Override
-				public Integer next() {
-					return ++i;
-				}
-			};
-
-		for (Integer integer : myIter) {
-			System.out.println(integer);
-		}
+//		Iterable<Integer> myIter = () ->
+//			new Iterator<>() {
+//				int i = 0;
+//				final static int MAX = 10;
+//
+//				@Override
+//				public boolean hasNext() {
+//					return i < MAX;
+//				}
+//
+//				@Override
+//				public Integer next() {
+//					return ++i;
+//				}
+//			};
+//
+//		for (Integer integer : myIter) {
+//			System.out.println(integer);
+//		}
 
 		//Iterable 과 Observalbe은 상대성이다. 목적은 같지반 방식이 정반대에 있는 것.
 		//Iterable은 Pull 방식 땡겨온다.  Obser
@@ -50,5 +52,27 @@ public class Ob {
 //		인데 . it.next가 pull 하는 방식을 취하고 있다.
 		// observable은 push 방식
 
+		Observer ob = new Observer() {
+			@Override
+			public void update(Observable o, Object arg) {
+				System.out.println(arg);
+			}
+		};
+
+		IntObservable io = new IntObservable();
+		io.addObserver(ob);
+
+		io.run();
+	}
+
+	static class IntObservable extends Observable implements Runnable{
+
+		@Override
+		public void run() {
+			for(int i = 1; i <=10; i++){
+				setChanged();
+				notifyObservers(i);
+			}
+		}
 	}
 }
