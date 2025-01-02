@@ -3,6 +3,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Ob {
 	//Reactive Programming, ReactiveX, Functional Reactive Programming
@@ -55,14 +57,23 @@ public class Ob {
 		Observer ob = new Observer() {
 			@Override
 			public void update(Observable o, Object arg) {
-				System.out.println(arg);
+				System.out.println(Thread.currentThread().getName()+" "+arg);
 			}
 		};
+
+		// 끝을 표현하는 Copmlete 방법이 없다.
+		// Exception 처리가 패턴에 녹아있지 않다.
 
 		IntObservable io = new IntObservable();
 		io.addObserver(ob);
 
 		io.run();
+
+		ExecutorService es = Executors.newSingleThreadExecutor();
+		es.execute(io);
+
+		System.out.println(Thread.currentThread().getName()+"EXIT");
+		es.shutdown();
 	}
 
 	static class IntObservable extends Observable implements Runnable{
