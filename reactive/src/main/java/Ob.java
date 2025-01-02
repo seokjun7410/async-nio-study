@@ -22,6 +22,7 @@ public class Ob {
 			new Iterator<>() {
 				int i = 0;
 				final static int MAX = 10;
+
 				@Override
 				public boolean hasNext() {
 					return i < MAX;
@@ -36,5 +37,18 @@ public class Ob {
 		for (Integer integer : myIter) {
 			System.out.println(integer);
 		}
+
+		//Iterable 과 Observalbe은 상대성이다. 목적은 같지반 방식이 정반대에 있는 것.
+		//Iterable은 Pull 방식 땡겨온다.  Obser
+		//for (Integer integer : myIter) {
+		//			System.out.println(integer);
+		//		}
+		//는 사실 내부적으로
+//		for(Iterator<Integer> it = myIter.iterator(); it.hasNext()){
+//			System.out.println(it.next());
+	//  }
+//		인데 . it.next가 pull 하는 방식을 취하고 있다.
+		// observable은 push 방식
+
 	}
 }
